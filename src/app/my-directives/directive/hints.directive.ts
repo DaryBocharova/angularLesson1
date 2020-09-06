@@ -2,42 +2,33 @@ import {
   Directive,
   HostBinding,
   HostListener,
+  Input
 } from '@angular/core';
 
 @Directive({
   selector: '[appHints]'
 })
 export class HintsDirective {
+ @Input() fontWeight: string;
 
-  @HostListener('keydown.enter')
-  save(event) {
-    this.setData(event);
-    console.log("You entered: ", event.target.value);
-  }
-
-  @HostBinding('keydown.enter')
-  get(event) {
-   return this.getData(event);
-    console.log(event);
-  }
-  
+ 
   constructor() { }
 
-  private setData(names:any) {
-    try {
-    localStorage.setItem('names', JSON.stringify(names));
-    } catch (e) {
-      console.log('Error saving to localStorage', e);
-      return null;
-    }
+
+@HostBinding("style.fontWeight") get getFontWeight(){
+         
+  return this.fontWeight;
 }
 
-  private getData(key:string) {
-    try {
-    return JSON.parse(localStorage.getItem(key));
-    } catch (e) {
-    console.log('Error getting data from localStorage', e);
-    return null;
-    }
+@HostBinding("style.cursor") get getCursor(){
+  return "pointer";
+}
+
+@HostListener("mouseenter") onMouseEnter() {
+  this.fontWeight ="bold";
+}
+
+@HostListener("mouseleave") onMouseLeave() {
+  this.fontWeight = "normal";
 }
 }
