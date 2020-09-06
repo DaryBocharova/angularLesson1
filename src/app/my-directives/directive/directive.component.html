@@ -5,7 +5,7 @@
     <input type="text" placeholder="Add an option" aria-label="Number" matInput [formControl]="myControl"
       [matAutocomplete]="auto" [(ngModel)]="text" (keydown.enter)="setData()" name="text" />
     <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
-      <mat-option *ngFor="let option of options | async" [value]="option">
+      <mat-option *ngFor="let option of nameOptions | async" [value]="option">
         {{ option }}
       </mat-option>
     </mat-autocomplete>
@@ -14,5 +14,5 @@
 
 
 <ul>
-  <li *ngFor="let option of options">{{ option }}</li>
+  <li *ngFor="let option of nameOptions">{{ option }}</li>
 </ul>
