@@ -1,18 +1,8 @@
-<label for="typeahead-basic">Search for a state:</label>
-
 <form class="lesson-form">
-  <mat-form-field class="example-full-width">
-    <input type="text" placeholder="Add an option" aria-label="Number" matInput [formControl]="myControl"
-      [matAutocomplete]="auto" [(ngModel)]="text" (keydown.enter)="setData()" name="text" />
-    <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
-      <mat-option *ngFor="let option of nameOptions | async" [value]="option">
-        {{ option }}
-      </mat-option>
-    </mat-autocomplete>
-  </mat-form-field>
+  <input type="text" appHints [matAutocomplete] [formControl]="myControl" name="text" />
+  <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+    <mat-option *ngFor="let opt of getData() | async" [value]="opt">
+      {{ opt }}
+    </mat-option>
+  </mat-autocomplete>
 </form>
-
-
-<ul>
-  <li *ngFor="let option of nameOptions">{{ option }}</li>
-</ul>

@@ -1,34 +1,46 @@
 import {
   Directive,
-  HostBinding,
   HostListener,
-  Input
+  ElementRef,
+  Renderer2
 } from '@angular/core';
+import { FormControl, FormBuilder } from '@angular/forms';
+import { Observable } from 'rxjs';
+import { map, startWith } from 'rxjs/operators';
 
 @Directive({
   selector: '[appHints]'
 })
 export class HintsDirective {
- @Input() fontWeight: string;
 
- 
-  constructor() { }
+  myControl = new FormControl();
+  nameOptions: Observable<string[]>;
+  options: string[] = JSON.parse(localStorage.getItem('names')) || [];
+  text: string;
 
+  constructor(
+    private elementRef: ElementRef,
+    private renderer: Renderer2,
+    private formBuilder: FormBuilder
+  ) {  }
+  
+  @HostListener('keydown.enter', ['$event.target.value']) onEnter(value: any): void {
+    this.options.push(value);
+    localStorage.setItem('options', JSON.stringify(this.options));
+  }
 
-@HostBinding("style.fontWeight") get getFontWeight(){
-         
-  return this.fontWeight;
-}
+  ngOnInit(): void {
+    this.nameOptions = this.myControl.valueChanges.pipe(
+      startWith(''),
+      map((value) => this._filterGroup(value))
+    );
+  }
 
-@HostBinding("style.cursor") get getCursor(){
-  return "pointer";
-}
-
-@HostListener("mouseenter") onMouseEnter() {
-  this.fontWeight ="bold";
-}
-
-@HostListener("mouseleave") onMouseLeave() {
-  this.fontWeight = "normal";
-}
+  private _filterGroup(value: string): string[] {
+  if (value) {
+    return this.options.filter(
+      (option) => option.toLowerCase().indexOf(value) === 0
+    );
+  }
+  }
 }
