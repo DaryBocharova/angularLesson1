@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormBuilder } from '@angular/forms';
-import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-directive',
@@ -9,7 +8,7 @@ import { Observable } from 'rxjs';
 })
 export class DirectiveComponent {
   myControl = new FormControl();
-  getData():string[] {
+ get options():string[] {
       return JSON.parse(localStorage.getItem('options')) || [];
 }
 }
